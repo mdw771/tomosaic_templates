@@ -13,14 +13,14 @@ except:
 from mosaic_util import *
 
 # ==========================================
-center_st = 3290
-center_end = 3340
-center_step = 1
+center_st = 6760
+center_end = 6800
+center_step = 5
 row_st = 0
-row_end = 4
-method = 'entropy' # 'manual' or 'vo'
-mode = 'merged' # 'discrete' or 'merged' or 'single'
-in_tile_pos = 600
+row_end = 1
+method = 'manual' # 'manual' or 'vo'
+mode = 'discrete' # 'discrete' or 'merged' or 'single'
+in_tile_pos = 400
 ds = 1
 dest_folder = 'center'
 # merged:
@@ -45,7 +45,9 @@ try:
     shift_grid = tomosaic.util.file2grid("shifts.txt")
     shift_grid = tomosaic.absolute_shift_grid(shift_grid, file_grid)
 except:
+    print('Refined shift is not provided. Using pre-set shift values. ')
     shift_grid = tomosaic.start_shift_grid(file_grid, x_shift, y_shift)
+print(shift_grid)
 
 shift_grid = shift_grid / ds
 in_tile_pos = in_tile_pos / ds
@@ -56,7 +58,7 @@ if mode == 'merged':
                        method=method)
 elif mode == 'discrete':
     find_center_discrete(source_folder, file_grid, shift_grid, (row_st, row_end), (center_st, center_end), center_step,
-                         slice=slice, method=method)
+                         slice=in_tile_pos, method=method)
 elif mode == 'single':
     find_center_single(sino_name, (center_st, center_end), center_step, preprocess_single=preprocess_single,
                        method=method)

@@ -26,6 +26,7 @@ t0 = time.time()
 root = os.getcwd()
 os.chdir(src_folder)
 shift_grid = tomosaic.start_shift_grid(file_grid, x_shift, y_shift)
+if rank == 0: print(shift_grid)
 if method == 'pc':
     refined_shift = tomosaic.refine_shift_grid(file_grid, shift_grid, motor_readout=(y_shift, x_shift), step=4499)
 elif method == 'reslice':

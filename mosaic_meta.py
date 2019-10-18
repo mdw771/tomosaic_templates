@@ -1,16 +1,20 @@
 import tomosaic
 import pickle
 import os
-from mpi4py import MPI
 import pickle
+import numpy as np
 
-prefix = 'Ming_Charcoal_25kev_lens10x_dfocus12cm_180'
+prefix = 'test_4'
 file_list = tomosaic.get_files('data_raw_1x', prefix, type='h5')
 file_grid = tomosaic.start_file_grid(file_list, pattern=1)
+file_grid = np.fliplr(file_grid)
+print(file_grid)
 data_format = 'aps_32id'
-x_shift = 1560
-y_shift = 996
+x_shift = 2235
+y_shift = 0
 
+
+from mpi4py import MPI
 comm = MPI.COMM_WORLD
 rank = comm.Get_rank()
 size = comm.Get_size()

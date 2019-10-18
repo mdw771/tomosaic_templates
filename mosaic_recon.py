@@ -14,16 +14,16 @@ from mosaic_util import *
 
 
 # ==========================================
-slice_st =  0	
-slice_end = 4204/4
+slice_st =  400
+slice_end = 401
 slice_step = 1
 pad_length = 512
-mode = 'merged'
-dest_folder = 'recon_flatcorr_4x'
-ds = 4
+mode = 'discrete'
+dest_folder = 'recon_raw_1x'
+ds = 1
 chunk_size = 5
 # discrete ------------------------
-source_folder = 'data_raw_4x'
+source_folder = 'data_raw_1x'
 # merged --------------------------
 fname = 'fulldata_flatcorr_4x/fulldata_flatcorr_4x.h5'
 # single --------------------------
