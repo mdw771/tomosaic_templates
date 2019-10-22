@@ -13,9 +13,9 @@ except:
 from mosaic_util import *
 
 # ==========================================
-center_st = 6760
-center_end = 6800
-center_step = 5
+center_st = None
+center_end = None
+center_step = 1
 row_st = 0
 row_end = 1
 method = 'manual' # 'manual' or 'vo'
@@ -48,6 +48,16 @@ except:
     print('Refined shift is not provided. Using pre-set shift values. ')
     shift_grid = tomosaic.start_shift_grid(file_grid, x_shift, y_shift)
 print(shift_grid)
+
+if center_st is None:
+    pano_list = glob.glob(os.path.join('preview_panos', '*_norm.tiff'))
+    pano_list.sort()
+    img1 = dxchange.read_tiff(pano_list[0])
+    img2 = dxchange.read_tiff(pano_list[-1])
+    center_init = tomopy.find_center_pc(np.squeeze(img1), np.squeeze(img2))
+    print('Phase correlation estimate: {}'.format(center_init))
+    center_st = center_init - 5
+    center_end = center_init + 5
 
 shift_grid = shift_grid / ds
 in_tile_pos = in_tile_pos / ds

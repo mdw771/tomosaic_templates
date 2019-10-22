@@ -14,23 +14,25 @@ from mosaic_util import *
 
 
 # ==========================================
-slice_st =  400
-slice_end = 401
+slice_st = 0
+slice_end = 2040
 slice_step = 1
-pad_length = 512
-mode = 'discrete'
+pad_length = 50
+mode = 'merged'
 dest_folder = 'recon_raw_1x'
 ds = 1
+algorithm='gridrec'
 chunk_size = 5
 # discrete ------------------------
 source_folder = 'data_raw_1x'
 # merged --------------------------
-fname = 'fulldata_flatcorr_4x/fulldata_flatcorr_4x.h5'
+fname = 'fulldata_flatcorr_1x/fulldata_flatcorr_1x.h5'
 # single --------------------------
 sino_name = ''
 preprocess_single = False
 center_single = 1000
 dest_fname = 'recon.tiff'
+options={'method':'SART', 'num_iter':10, 'proj_type':'linear'}
 # ==========================================
 
 try:
@@ -40,19 +42,20 @@ except:
     shift_grid = tomosaic.start_shift_grid(file_grid, x_shift, y_shift)
 
 center_vec = tomosaic.read_center_pos('center_pos.txt')
-print(center_vec)
+
 shift_grid = shift_grid / float(ds)
 center_vec = center_vec / float(ds)
+print(center_vec)
 
 t0 = time.time()
 if mode == 'merged':
     tomosaic.recon.recon_hdf5(fname, dest_folder, (slice_st, slice_end),
                               slice_step, shift_grid, center_vec=center_vec, chunk_size=chunk_size,
-                              dtype='float32', save_sino=False, pad_length=pad_length, ring_removal=False)
+                              dtype='float32', save_sino=False, pad_length=pad_length, ring_removal=False, filter_name='parzen')
 elif mode == 'discrete':
     tomosaic.recon_block(file_grid, shift_grid, source_folder, dest_folder, (slice_st, slice_end), 1,
-                         center_vec, algorithm='gridrec', test_mode=False, ds_level=0, save_sino=True,
-                         blend_method='pyramid', data_format=data_format)
+                         center_vec, algorithm=algorithm, test_mode=False, ds_level=0, save_sino=True,
+                         blend_method='pyramid', data_format=data_format, ring_removal=False)
 elif mode == 'single':
     sino = dxchange.read_tiff(sino_name)
     sino = sino.reshape([sino.shape[0], 1, sino.shape[1]]) 
