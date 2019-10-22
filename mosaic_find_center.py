@@ -58,6 +58,8 @@ if center_st is None:
     print('Phase correlation estimate: {}'.format(center_init))
     center_st = center_init - 5
     center_end = center_init + 5
+    # write current center into center_pos.txt file
+    np.savetxt('center_pos.txt', np.vstack([range(row_st, row_end), [center_init] * (row_end - row_st)]).transpose(), fmt=['%d', '%.1f'])
 
 shift_grid = shift_grid / ds
 in_tile_pos = in_tile_pos / ds
