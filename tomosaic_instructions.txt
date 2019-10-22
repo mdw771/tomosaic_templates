@@ -1,0 +1,16 @@
+1. copy scripts into h5 folder
+2. mosaic_reorganize.py
+3. move add_xy_indices, fix_missing_frames.py, replace_dark_field to data_raw_1x
+4. open mosaic_meta.py and change: x_shift, y_shift in pixel
+5. python mosaic_preview.py --pano 0; python mosaic_preview.py --pano <last_frame>
+6. python mosaic_find_center.py; it will write recons with center +/- 5 from the pc guess into ./center
+7. open center_pos.txt, write 0 <center> #### I just changed the script so that it automatically write center_pos.txt according to the phase correlation estimation, but please still check it or modify it if you want to manually refine the center
+8. open mosaic_recon.py, set slice_st and slice_end, make sure mode is discrete, python mosaic_recon.py
+
+
+How to install tomosaic
+git clone https://github.com/mdw771/tomosaic2
+pip install -e ./tomosaic2
+pip install pyfftw
+git clone https://github.com/mdw771/tomosaic_templates
+
